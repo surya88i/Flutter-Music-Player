@@ -42,9 +42,9 @@ class _StateArtist extends State<Artists> {
                 child: AspectRatio(
                   aspectRatio: 18 / 16,
                   child: new Image.asset(
-                    "assets/artist.jpg",
+                    "assets/artist.png",
                     height: 120.0,
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -64,9 +64,9 @@ class _StateArtist extends State<Artists> {
             ],
           ),
           onTap: () {
-            Navigator.of(context)
-                .push(new MaterialPageRoute(builder: (context) {
-              return new CardDetail(widget.db, song, 1);
+              Navigator.of(context)
+                  .push(new MaterialPageRoute(builder: (context) {
+                return new CardDetail(widget.db, song, 1);
             }));
           },
         ),
@@ -87,4 +87,5 @@ class _StateArtist extends State<Artists> {
                 childAspectRatio: 8.0 / 10.0,
               ));
   }
+  
 }

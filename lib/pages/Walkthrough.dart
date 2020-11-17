@@ -11,20 +11,24 @@ class SplashScreen extends StatefulWidget {
   }
 }
 
-class SplashState extends State<SplashScreen> {
+class SplashState extends State<SplashScreen>{
   var db;
   var isLoading = false;
-
+  
   @override
-  void initState() {
+  void initState() { 
     super.initState();
     loadSongs();
   }
+  @override
+  void dispose() { 
+    super.dispose();
+  }
+ 
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        backgroundColor: Colors.deepOrange,
         body: SafeArea(
           child: new Container(
             height: MediaQuery.of(context).size.height,
@@ -35,8 +39,9 @@ class SplashState extends State<SplashScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Image.asset("assets/kid.png", height: 200, width: 200,
-                      fit: BoxFit.cover,),
+                    Image.asset("assets/kids.gif", 
+                    height: 300, width: 300,
+                      fit: BoxFit.cover),
                   ],
                 ),
                 Container(
@@ -45,7 +50,7 @@ class SplashState extends State<SplashScreen> {
                   child: Text(
                     "Music player",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Color(0xFF333945),
                       fontSize: 40,
                     ),
                   ),
@@ -59,7 +64,7 @@ class SplashState extends State<SplashScreen> {
                 ),
                 ),
                 Text("Setting up...",
-                    style: TextStyle(color: Colors.white, fontSize: 20))
+                    style: TextStyle(color: Color(0xFF333945), fontSize: 20))
                
               ],
             ),
@@ -85,7 +90,7 @@ class SplashState extends State<SplashScreen> {
         List<Song> list = new List.from(songs);
 
         if (list == null || list.length == 0) {
-          print("List-> $list");
+         // print("List-> $list");
           Navigator.of(context).pop(true);
           Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
             return new NoMusicFound();
@@ -93,7 +98,7 @@ class SplashState extends State<SplashScreen> {
         }
         else {
           for (Song song in list)
-            db.upsertSOng(song);
+            db.updateInsertSongs(song);
           if (!mounted) {
             return;
           }

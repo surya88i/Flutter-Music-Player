@@ -12,7 +12,6 @@ class NoMusicFound extends StatelessWidget {
             title: Text("Music player"),
             automaticallyImplyLeading: false,
           ),
-         
           body: new Center(
             child: SingleChildScrollView(
               child: Column(

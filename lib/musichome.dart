@@ -3,11 +3,8 @@ import 'package:flute_music_player/flute_music_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:music/database/database_client.dart';
-import 'package:music/pages/AboutPage.dart';
 import 'package:music/pages/DataSearch.dart';
 import 'package:music/pages/NowPlaying.dart';
-import 'package:music/pages/settings.dart';
-import 'package:music/util/Music.dart';
 import 'package:music/util/lastplay.dart';
 import 'package:music/views/album.dart';
 import 'package:music/views/artists.dart';
@@ -37,32 +34,19 @@ class _MusicState extends State<MusicHome> {
   bool isLoading = true;
   Song last;
   Color color = Colors.deepPurple;
-  Music selected = music[0];
-  void selecetdMusic(Music music) {
-    setState(() {
-      selected = music;
-      if (selected.title == 'Setting') {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Settings()));
-        } else {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AboutPage()));
-        }
-    });
-  }
-
+ 
   getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
         return new Home(db);
+      case 1:
+        return new Album(db);
       case 2:
         return new Songs(db);
       case 3:
         return new Artists(db);
-      case 1:
-        return new Album(db);
       case 4:
-        return new PlayList(db);
+        return new PlayList(db,_selectedDrawerIndex);
       default:
         return new Text("Error");
     }
@@ -81,7 +65,7 @@ class _MusicState extends State<MusicHome> {
   }
 
   @override
-  void dispose() async {
+  void dispose(){
     super.dispose();
   }
 
@@ -118,6 +102,7 @@ class _MusicState extends State<MusicHome> {
         appBar: _selectedDrawerIndex == 0
             ? null
             : new AppBar(
+              
                 title: new Text(title),
                 actions: <Widget>[
                   new IconButton(
@@ -129,40 +114,27 @@ class _MusicState extends State<MusicHome> {
                               delegate: DataSearch(db, songs));
                         });
                       }),
-                  PopupMenuButton<Music>(
-                      onSelected: selecetdMusic,
-                      elevation: 8,
-                      tooltip: 'Setting',
-                      itemBuilder: (context) {
-                        return music
-                            .map((Music m) => PopupMenuItem<Music>(
-                                  value: m,
-                                  child: ListTile(
-                                    visualDensity: VisualDensity.standard,
-                                    contentPadding:
-                                        EdgeInsets.symmetric(horizontal: 30.0),
-                                    leading: Text(m.title),
-                                  ),
-                                ))
-                            .toList();
-                      })
+                     
                 ],
               ),
+             
         floatingActionButton: new FloatingActionButton(
-            child: new Icon(Icons.play_circle_outline),
-            onPressed: () async {
-              Navigator.of(context)
+            child: new Icon(Icons.play_circle_filled),
+            splashColor: Colors.white,
+            tooltip: "Play",
+            onPressed: () async{
+                Navigator.of(context)
                   .push(new MaterialPageRoute(builder: (context) {
                 if (MyQueue.songs == null) {
                   List<Song> list = new List();
                   list.add(last);
                   MyQueue.songs = list;
                   return new NowPlaying(db, list, 0,0);
-                } else
+                } else{
                   return new NowPlaying(db, MyQueue.songs, MyQueue.index,1);
-              }));
-              //}
+              }}));
             }),
+            
         body: isLoading
             ? new Center(
                 child: new CircularProgressIndicator(),
@@ -173,7 +145,7 @@ class _MusicState extends State<MusicHome> {
           selectedItemColor: Colors.white,
           unselectedItemColor: Color(0xFF333945),
           showSelectedLabels: true,
-          showUnselectedLabels: true,
+          showUnselectedLabels: false,
           type: BottomNavigationBarType.shifting,
           selectedIconTheme: IconThemeData(color: Colors.white),
           unselectedIconTheme: IconThemeData(color: Color(0xFF333945)),

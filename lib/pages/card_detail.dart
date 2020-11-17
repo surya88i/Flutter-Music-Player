@@ -54,14 +54,11 @@ class StateCardDetail extends State<CardDetail> {
                 new SliverAppBar(
                   expandedHeight:
                       orientation == Orientation.portrait ? 350.0 : 200.0,
-                  floating: false,
                   pinned: true,
+                  floating: true,
+                  title: Text(widget.song.album),
                   flexibleSpace: new FlexibleSpaceBar(
-                    title: widget.mode == 0
-                        ? new Text(
-                            widget.song.album,
-                          )
-                        : new Text(widget.song.artist),
+                    
                     background: new Stack(
                       fit: StackFit.expand,
                       children: <Widget>[
@@ -84,28 +81,23 @@ class StateCardDetail extends State<CardDetail> {
                   delegate: new SliverChildListDelegate(<Widget>[
                     new Padding(
                       padding: const EdgeInsets.only(left: 8.0),
-                      child: new Text(
-                        widget.mode == 0
+                      child: new ListTile(
+                       title: Text(widget.mode == 0
                             ? widget.song.album
                             : widget.song.artist,
                         style: new TextStyle(
-                            fontSize: 30.0, fontWeight: FontWeight.bold),
-                        maxLines: 1,
-                      ),
-                    ),
-                    new Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: new Text(
+                            fontSize: 20.0, fontWeight: FontWeight.bold),
+                        maxLines: 1,),
+                        subtitle: new Text(
                         widget.mode == 0 ? widget.song.artist : "",
                         style: new TextStyle(fontSize: 14.0),
                         maxLines: 1,
                       ),
+                      trailing: new Text(songs.length.toString() + " songs"),
+                      ),
                     ),
-                    new Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8.0, top: 10.0, bottom: 10.0),
-                      child: new Text(songs.length.toString() + " song(s)"),
-                    ),
+                   
+                    
                     new Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: new Text("Songs",
@@ -153,10 +145,12 @@ class StateCardDetail extends State<CardDetail> {
             ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
-          MyQueue.songs = songs;
+         setState(() {
+            MyQueue.songs = songs;
           Navigator.of(context).push(new MaterialPageRoute(
               builder: (context) =>
                   new NowPlaying(widget.db, MyQueue.songs, 0,0)));
+         });
         },
         child: new Icon(Icons.shuffle),
       ),

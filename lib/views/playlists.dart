@@ -5,7 +5,9 @@ import 'package:music/pages/list_songs.dart';
 
 class PlayList extends StatefulWidget {
   final DatabaseClient db;
-  PlayList(this.db);
+  final int selectedDrawerIndex;
+  /* final List<Song> songs; */
+  PlayList(this.db,this.selectedDrawerIndex);
 
   @override
   State<StatefulWidget> createState() {
@@ -16,22 +18,34 @@ class PlayList extends StatefulWidget {
 class _StatePlaylist extends State<PlayList> {
   var mode;
   var selected;
-  
+  int selectedDrawerIndex;
+
   @override
   void initState() {
     mode = 1;
     selected = 1;
+    selectedDrawerIndex=widget.selectedDrawerIndex;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      child: potrait(),
+    return new Scaffold(
+      appBar: selectedDrawerIndex==4?null:AppBar(
+        title:Text("PlayList"),
+        actions: [
+          /* IconButton(icon: Icon(Icons.search), onPressed: (){
+            setState(() {
+              showSearch(context: context, delegate: DataSearch(widget.db, widget.songs));
+            });
+          }), */
+        ],
+      ),
+      body: portrait(),
     );
   }
 
-  Widget potrait() {
+  Widget portrait() {
     return new ListView(
       children: <Widget>[
         new ListTile(

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flute_music_player/flute_music_player.dart';
 import 'package:flutter/material.dart';
 import 'package:music/database/database_client.dart';
@@ -100,15 +99,19 @@ class _SongsState extends State<Songs> {
                         style: new TextStyle(
                             fontSize: 12.0, color: Colors.grey)),
                     onTap: () {
-                      MyQueue.songs = songs;
+                      setState(() {
+                        MyQueue.songs = songs;
                       Navigator.of(context).push(
                           new MaterialPageRoute(
                               builder: (context) =>
                               new NowPlaying(
                                   widget.db, MyQueue.songs, i,0)));
+                      });
                     },
                     onLongPress: () {
-                      setFav(songs[i]);
+                      setState(() {
+                        setFav(songs[i]);
+                      });
                     },
                   ),
                 ],

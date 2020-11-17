@@ -46,10 +46,10 @@ class _StateAlbum extends State<Album> {
                       ? new Image.file(
                           getImage(song),
                           height: 120.0,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         )
                       : new Image.asset(
-                          "images/back.jpg",
+                          "assets/back.jpg",
                           height: 120.0,
                           fit: BoxFit.cover,
                         ),
@@ -80,10 +80,9 @@ class _StateAlbum extends State<Album> {
             ],
           ),
           onTap: () {
-            Navigator.push(context, new MaterialPageRoute(builder: (_) {
+              Navigator.push(context, new MaterialPageRoute(builder: (context) {
               return new CardDetail(widget.db, song, 0);
-            }));
-            
+              }));
           },
         ),
       );
